@@ -1,0 +1,13 @@
+.instructions {
+  color: var(--text-color);
+  font-family: sans-serif;
+  user-select: none;
+  background-color: var(--bg-color);
+}
+
+.key {
+  background: var(--text-key-bg);
+  border-radius: 5px;
+  padding: 3px;
+  color: var(--text-key-color);
+}

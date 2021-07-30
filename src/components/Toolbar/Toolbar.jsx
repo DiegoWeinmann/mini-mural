@@ -2,6 +2,7 @@ import React from "react";
 import ClipboardManager from "../ClipboardManager";
 import ColorPicker from "./ColorPicker";
 import Modal from "../Modal";
+import Instructions from "../Instructions";
 import "./styles.css";
 
 class Toolbar extends React.Component {
@@ -54,7 +55,9 @@ class Toolbar extends React.Component {
             onClose={this.handleModalClose}
             returnFocusRef={this.openModalButtonRef}
             title="Mini mural instructions"
-          ></Modal>
+          >
+            <Instructions />
+          </Modal>
         )}
       </aside>
     );
