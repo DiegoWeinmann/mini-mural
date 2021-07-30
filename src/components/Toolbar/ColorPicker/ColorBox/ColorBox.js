@@ -7,10 +7,10 @@ import "./styles.css";
 class ColorBox extends React.Component {
   static propTypes = {
     onClick: PropTypes.func,
-    color: PropTypes.string.isRequired
+    color: PropTypes.string.isRequired,
   };
 
-  handleClick = e => {
+  handleClick = (e) => {
     const color = e.target.dataset.color;
     this.props.onClick(color);
   };
@@ -20,9 +20,7 @@ class ColorBox extends React.Component {
     let border;
 
     if (active) {
-      const borderColor = Color(color)
-        .darken(0.4)
-        .desaturate(0.2);
+      const borderColor = Color(color).darken(0.4).desaturate(0.2);
       border = `2px solid ${borderColor}`;
     } else {
       border = "1px solid #bbbbbb";
@@ -41,6 +39,9 @@ class ColorBox extends React.Component {
         onClick={this.handleClick}
         data-color={color}
         style={{ background: color, border: this.getBorderStyle() }}
+        ref={this.props.colorBoxRef}
+        tabIndex={this.props.tabIndex}
+        aria-label={`${this.props.colorName} color selected`}
       />
     );
   }
