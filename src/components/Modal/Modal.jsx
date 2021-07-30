@@ -90,7 +90,9 @@ class Modal extends React.Component {
             <h1 className="Modal__title" id={modalTitleId}>
               {this.props.title}
             </h1>
-            <div className="Modal__content">{this.props.children}</div>
+            <div className="Modal__content" role="main">
+              {this.props.children}
+            </div>
             <div className="Modal__button-container">
               <button ref={this.closeButtonRef} onClick={this.props.onClose}>
                 Close
