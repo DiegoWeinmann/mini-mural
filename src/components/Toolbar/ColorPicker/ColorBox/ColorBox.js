@@ -42,6 +42,7 @@ class ColorBox extends React.Component {
         ref={this.props.colorBoxRef}
         tabIndex={this.props.tabIndex}
         aria-label={`${this.props.colorName} color selected`}
+        role="listitem"
       />
     );
   }

@@ -86,6 +86,7 @@ class ColorPicker extends React.Component {
         onKeyDown={this.handleKeyDown}
         ref={this.props.toolbarRef}
         aria-label="Color picker"
+        role="list"
       >
         {colorBoxes}
       </div>

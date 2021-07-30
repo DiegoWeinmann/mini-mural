@@ -49,8 +49,8 @@ function Instructions() {
         </li>
         <li>
           Open Help:
-          <span className="key" aria-label="question mark">
-            ?
+          <span className="key">
+            ? <span className="visually-hidden">question mark</span>
           </span>
         </li>
       </ul>
