@@ -16,7 +16,8 @@ class Mural extends React.Component {
     addNote: PropTypes.func,
     enableMultipleSelection: PropTypes.func,
     disableMultipleSelection: PropTypes.func,
-    clearSelectedNotes: PropTypes.func
+    clearSelectedNotes: PropTypes.func,
+    setSelectedNote: PropTypes.func,
   };
 
   constructor(props) {
@@ -29,7 +30,7 @@ class Mural extends React.Component {
   componentDidMount() {
     this.mural.current.addEventListener("click", this.clearSelectedNotes);
     this.mural.current.addEventListener("dblclick", this.addNoteToMural);
-    this.mural.current.addEventListener("keydown", this.handleKeyDown);
+    // this.mural.current.addEventListener("keydown", this.handleKeyDown);
     this.mural.current.addEventListener("keyup", this.handleKeyUp);
 
     if (this.canvas && this.canvas.current) {
@@ -37,13 +38,13 @@ class Mural extends React.Component {
     }
   }
 
-  clearSelectedNotes = e => {
+  clearSelectedNotes = (e) => {
     if (e.target.isEqualNode(this.mural.current)) {
       this.props.clearSelectedNotes();
     }
   };
 
-  addNoteToMural = e => {
+  addNoteToMural = (e) => {
     if (e.target.classList.contains("sticky-note-content")) {
       return;
     }
@@ -59,19 +60,98 @@ class Mural extends React.Component {
       width,
       height,
       x: x - pixelsToInt(width) / 2,
-      y: y - pixelsToInt(height) / 2
+      y: y - pixelsToInt(height) / 2,
+      date: new Date(),
     };
 
     addNote(noteToAdd);
   };
 
-  handleKeyDown = e => {
+  handleKeyDown = (e) => {
     if (e.key === "Shift") {
       this.props.enableMultipleSelection();
     }
+
+    if (e.key === "t" && e.ctrlKey) {
+      if (this.toolbar && this.toolbar.current) {
+        this.toolbar.current.focus();
+      }
+    }
+
+    if (e.key === "ArrowDown" || (e.key === "j" && e.ctrlKey)) {
+      const notes = Object.values(this.props.notes);
+      const selectedNotes = Object.values(this.props.selectedNotes);
+
+      if (notes.length === 0) return;
+
+      if (selectedNotes.length === 0) {
+        this.props.setSelectedNote(notes[0].id);
+      } else {
+        const selectedNoteIndex = notes.findIndex((note) => {
+          return note.id === selectedNotes[0].note_id;
+        });
+
+        if (selectedNoteIndex === notes.length - 1) {
+          return this.props.setSelectedNote(notes[0].id);
+        }
+
+        this.props.setSelectedNote(notes[selectedNoteIndex + 1].id);
+      }
+    }
+
+    if (e.key === "ArrowUp" || (e.key === "k" && e.ctrlKey)) {
+      const notes = Object.values(this.props.notes);
+      const selectedNotes = Object.values(this.props.selectedNotes);
+
+      if (notes.length === 0) return;
+
+      if (selectedNotes.length === 0) {
+        this.props.setSelectedNote(notes[0].id);
+      } else {
+        const selectedNoteIndex = notes.findIndex((note) => {
+          return note.id === selectedNotes[0].note_id;
+        });
+
+        if (selectedNoteIndex === 0) {
+          return this.props.setSelectedNote(notes[notes.length - 1].id);
+        }
+
+        this.props.setSelectedNote(notes[selectedNoteIndex - 1].id);
+      }
+    }
+
+    if (e.key === "c" && e.ctrlKey) {
+      const notes = Object.values(this.props.notes);
+      let x, y;
+      if (notes.length > 0) {
+        const sortedNotes = Object.values(notes).sort(
+          (a, b) => b.date - a.date
+        );
+        const lastNote = sortedNotes[0];
+        x = lastNote.x + 140 + 10;
+        y = lastNote.y + 140 + 10;
+      } else {
+        x = 400;
+        y = 500;
+      }
+      const { currentColor, addNote } = this.props;
+      const width = NOTE_DEFAULT_HEIGHT;
+      const height = NOTE_DEFAULT_WIDTH;
+
+      const noteToAdd = {
+        text: "",
+        color: currentColor,
+        width,
+        height,
+        x: x - pixelsToInt(width) / 2,
+        y: y - pixelsToInt(height) / 2,
+        date: new Date(),
+      };
+      addNote(noteToAdd);
+    }
   };
 
-  handleKeyUp = e => {
+  handleKeyUp = (e) => {
     if (e.key === "Shift") {
       this.props.disableMultipleSelection();
     }
@@ -82,7 +162,6 @@ class Mural extends React.Component {
     const StickyNotes = Object.values(notes).map(
       ({ id, text, color, width, height, x, y }) => {
         const selected = selectedNotes.hasOwnProperty(id);
-
         return (
           <StickyNote
             id={id}
@@ -94,6 +173,7 @@ class Mural extends React.Component {
             y={y}
             selected={selected}
             key={id}
+            tabIndex={selected ? 0 : -1}
           />
         );
       }

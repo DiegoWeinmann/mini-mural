@@ -41,7 +41,10 @@ class Toolbar extends React.Component {
   render() {
     return (
       <aside className="Toolbar" aria-label="Mini mural toolbar">
-        <ColorPicker />
+        <ColorPicker
+          canvasRef={this.props.canvasRef}
+          toolbarRef={this.props.toolbarRef}
+        />
         <ClipboardManager />
         <button
           onClick={this.handleModalOpen}

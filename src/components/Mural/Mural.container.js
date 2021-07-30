@@ -4,18 +4,19 @@ import { addNote } from "../../actions/notes-actions";
 import {
   clearSelectedNotes,
   enableMultipleSelection,
-  disableMultipleSelection
+  disableMultipleSelection,
+  setSelectedNote,
 } from "../../actions/mural-actions";
 
 const mapStateToProps = ({ notes, mural, toolbar }) => ({
   notes: notes,
   selectedNotes: mural.selected_notes,
-  currentColor: toolbar["current_color"]
+  currentColor: toolbar["current_color"],
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    addNote: note => {
+    addNote: (note) => {
       dispatch(addNote(note));
     },
     clearSelectedNotes: () => {
@@ -26,7 +27,10 @@ const mapDispatchToProps = dispatch => {
     },
     disableMultipleSelection: () => {
       dispatch(disableMultipleSelection());
-    }
+    },
+    setSelectedNote: (id) => {
+      dispatch(setSelectedNote(id));
+    },
   };
 };
 

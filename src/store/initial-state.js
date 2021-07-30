@@ -4,10 +4,11 @@ export default {
   notes: {},
   mural: {
     selected_notes: {},
-    multipleSelection: false
+    multipleSelection: false,
+    selected_note: null,
   },
   toolbar: {
-    current_color: NOTE_DEFAULT_COLOR
+    current_color: NOTE_DEFAULT_COLOR,
   },
-  clipboard: {}
+  clipboard: {},
 };
