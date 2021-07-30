@@ -7,6 +7,11 @@ import registerServiceWorker from "./registerServiceWorker";
 import "./index.css";
 import "font-awesome/css/font-awesome.css";
 
+if (process.env.NODE_ENV !== "production") {
+  const axe = require("@axe-core/react");
+  axe(React, ReactDOM, 1000);
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <Mural />
