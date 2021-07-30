@@ -22,6 +22,8 @@ class Mural extends React.Component {
   constructor(props) {
     super(props);
     this.mural = React.createRef();
+    this.toolbar = React.createRef();
+    this.canvas = React.createRef();
   }
 
   componentDidMount() {
@@ -29,6 +31,10 @@ class Mural extends React.Component {
     this.mural.current.addEventListener("dblclick", this.addNoteToMural);
     this.mural.current.addEventListener("keydown", this.handleKeyDown);
     this.mural.current.addEventListener("keyup", this.handleKeyUp);
+
+    if (this.canvas && this.canvas.current) {
+      this.canvas.current.focus();
+    }
   }
 
   clearSelectedNotes = e => {
@@ -95,9 +101,12 @@ class Mural extends React.Component {
 
     return (
       <div id="Mural" className="Mural" ref={this.mural} tabIndex="-1">
-        <Welcome />
-        {StickyNotes}
-        <Toolbar />
+        <main tabIndex="0" onKeyDown={this.handleKeyDown} ref={this.canvas}>
+          <h1 className="visually-hidden">Mini mural canvas</h1>
+          <Welcome />
+          {StickyNotes}
+        </main>
+        <Toolbar toolbarRef={this.toolbar} canvasRef={this.canvas} />
       </div>
     );
   }

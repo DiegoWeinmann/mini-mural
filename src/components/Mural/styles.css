@@ -3,6 +3,7 @@
   width: 100%;
 }
 
-.Mural:focus {
-  outline: none;
+.Mural main {
+  height: 100%;
+  border: 1px solid black;
 }
